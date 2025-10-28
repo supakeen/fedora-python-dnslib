@@ -18,8 +18,7 @@ Simple library to encode/decode DNS wire-format packets.
 Summary:        %{summary}
 
 BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(pytest)
+
 %{?python_provide:%python_provide python3-%{pypi_name}}
 
 %description -n python3-%{pypi_name}
@@ -29,25 +28,26 @@ Simple library to encode/decode DNS wire-format packets.
 %autosetup -n %{pypi_name}-%{version}
 rm -rf %{pypi_name}.egg-info
 sed -i -e '/^#!\//, 1d' dnslib/test_decode.py
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%py3_build
+%pyproject_wheel
 
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files -l dnslib
 
-#%%check
-#./run_tests.sh
+%check
+%pyproject_check_import
 
-%files -n python3-%{pypi_name}
+%files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc README
 %license LICENSE
-%{python3_sitelib}/%{pypi_name}/
-%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info/
 
 %changelog
 * Tue Oct 28 2025 Simon de Vlieger <cmdr@supakeen.com> - 0.9.26-0
-- Update to upstream version 0.9.26
+- Update to upstream version 0.9.26, update to use pyproject macros.
 
 * Sat Jan 18 2025 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.21-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
