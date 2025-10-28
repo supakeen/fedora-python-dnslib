@@ -5,8 +5,7 @@ Version:        0.9.26
 Release:        0%{?dist}
 Summary:        Simple library to encode/decode DNS packets
 
-# Automatically converted from old format: BSD - review is highly recommended.
-License:        LicenseRef-Callaway-BSD
+License:        BSD-2-Clause
 URL:            https://github.com/paulc/dnslib
 Source0:        %{url}/archive/%{version}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
@@ -40,6 +39,7 @@ sed -i -e '/^#!\//, 1d' dnslib/test_decode.py
 
 %check
 %pyproject_check_import
+VERSIONS=%{python3} ./run_tests.sh
 
 %files -n python3-%{pypi_name} -f %{pyproject_files}
 %doc README
